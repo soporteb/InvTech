@@ -20,7 +20,7 @@
 2. `pip install -r requirements.txt`
 3. Ensure PostgreSQL is running locally.
 4. Keep `.env` with `POSTGRES_HOST=localhost` (default in `.env.example`).
-5. Create/repair local DB + user credentials from `.env`:
+5. Create/repair local DB + user credentials from `.env` (**no `psql` CLI required**):
    - Linux/macOS: `./scripts/bootstrap_local_postgres.sh`
    - Windows PowerShell: `./scripts/bootstrap_local_postgres.ps1`
 6. `python manage.py migrate`
@@ -69,14 +69,16 @@ This means your local PostgreSQL user/password does not match `.env`.
    - `POSTGRES_PASSWORD`
    - `POSTGRES_DB`
    - `POSTGRES_HOST=localhost`
-2. Run bootstrap script to align PostgreSQL user/db/password with `.env`:
+2. Run bootstrap script to align PostgreSQL user/db/password with `.env` (uses Python + psycopg, not `psql` binary):
    - Linux/macOS: `./scripts/bootstrap_local_postgres.sh`
    - Windows PowerShell: `./scripts/bootstrap_local_postgres.ps1`
 3. Retry: `python manage.py migrate`
 
-> Note: if your PostgreSQL admin user/password is required, set these before running bootstrap:
+> Note: if your PostgreSQL admin credentials are required, set these in `.env` before bootstrap:
 > - `PGADMIN_USER` (default `postgres`)
-> - `PGADMIN_PASSWORD` (optional, used as `PGPASSWORD` for admin connection)
+> - `PGADMIN_PASSWORD`
+> - `PGADMIN_HOST` (default `localhost`)
+> - `PGADMIN_PORT` (default `5432`)
 
 ## If `python manage.py migrate` hangs / delays
 - Verify host/port in `.env` (`POSTGRES_HOST`, `POSTGRES_PORT`).

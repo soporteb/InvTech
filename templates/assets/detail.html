@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Asset Detail{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="flex justify-between">
+    <h1 class="text-xl font-semibold">Asset #{{ object.id }}</h1>
+    <a href="{% url 'asset_edit' object.pk %}" class="btn-primary">Edit</a>
+  </div>
+  <div class="mt-4 flex gap-3 text-sm">
+    <a href="?tab=overview">Overview</a>
+    <a href="?tab=assignments">Assignments</a>
+    <a href="?tab=history">History</a>
+    <a href="?tab=operations">Operations</a>
+  </div>
+
+  {% if tab == 'overview' %}
+  <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+    <p><strong>Category:</strong> {{ object.category.name }}</p>
+    <p><strong>Location:</strong> {{ object.location.exact_name }}</p>
+    <p><strong>Status:</strong> {{ object.status.name }}</p>
+    <p><strong>Padlock:</strong> {{ asset_context.padlock }}</p>
+    <p><strong>License:</strong> {{ asset_context.license }}</p>
+  </div>
+  {% elif tab == 'assignments' %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+      <div>
+        <h3 class="font-semibold mb-2">Assignment History</h3>
+        <ul class="text-sm space-y-2">
+          {% for assignment in object.assignments.all %}
+          <li>{{ assignment.employee.names }} ({{ assignment.start_date }} - {{ assignment.end_date|default:'Current' }})</li>
+          {% empty %}<li>No assignments.</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-semibold mb-2">Reassign (atomic close + create)</h3>
+          <form method="post" action="{% url 'asset_reassign' object.pk %}" class="space-y-2">
+            {% csrf_token %}
+            {{ reassign_form.as_p }}
+            <button class="btn-primary">Reassign</button>
+          </form>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">Return / Unassign</h3>
+          <form method="post" action="{% url 'asset_return' object.pk %}" class="space-y-2">
+            {% csrf_token %}
+            {{ return_form.as_p }}
+            <button class="btn-primary">Return</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% elif tab == 'operations' %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+      <div>
+        <h3 class="font-semibold mb-2">Record operation</h3>
+        <form method="post" action="{% url 'asset_operation_create' object.pk %}" class="space-y-2">
+          {% csrf_token %}
+          {{ operation_form.as_p }}
+          <button class="btn-primary">Save operation</button>
+        </form>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2">Operation log</h3>
+        <ul class="text-sm space-y-2">
+          {% for op in object.operations.all %}
+          <li>{{ op.performed_at }} · {{ op.get_operation_type_display }} · {{ op.justification|default:'-' }}</li>
+          {% empty %}<li>No operations.</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% else %}
+    <ul class="mt-4 text-sm">
+      {% for event in object.events.all %}
+      <li>{{ event.timestamp }} · {{ event.summary }}</li>
+      {% empty %}<li>No history.</li>{% endfor %}
+    </ul>
+  {% endif %}
+</div>
+{% endblock %}

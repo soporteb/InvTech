@@ -1,0 +1,5 @@
+body { font-family: Inter, Roboto, sans-serif; }
+.card { background: white; border: 1px solid #E2E8F0; border-radius: 0.75rem; padding: 1rem; }
+.kpi-card { background: #334155; color: white; border-radius: 0.75rem; padding: 1rem; }
+.kpi-card h3 { color: #06B6D4; font-size: 1.5rem; font-weight: 700; }
+.btn-primary { background: #06B6D4; color: white; border-radius: 0.5rem; padding: 0.5rem 0.9rem; }

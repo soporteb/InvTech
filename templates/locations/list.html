@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Locations{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="flex justify-between mb-3"><h1 class="font-semibold">Locations</h1><a href="{% url 'location_create' %}" class="btn-primary">New</a></div>
+  <table class="min-w-full text-sm">
+    {% for l in object_list %}
+    <tr class="border-b"><td class="py-2">{{ l.exact_name }}</td><td>{{ l.site }}</td><td>{{ l.floor }}</td><td><a href="{% url 'location_edit' l.pk %}">Edit</a></td></tr>
+    {% empty %}<tr><td>No locations.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

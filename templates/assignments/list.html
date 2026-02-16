@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Assignments{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <form class="flex flex-wrap items-end gap-2" method="get">
+    <input name="q" value="{{ request.GET.q }}" class="border rounded px-3 py-2" placeholder="Search employee or asset" />
+    <select name="state" class="border rounded px-3 py-2">
+      <option value="">All</option>
+      <option value="active" {% if request.GET.state == 'active' %}selected{% endif %}>Active</option>
+      <option value="closed" {% if request.GET.state == 'closed' %}selected{% endif %}>Closed</option>
+    </select>
+    <button class="btn-primary">Filter</button>
+    <a href="{% url 'assignment_reason_create' %}" class="btn-primary">New Reason</a>
+  </form>
+</div>
+
+<div class="card overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead>
+      <tr class="border-b text-left">
+        <th class="py-2">Asset</th>
+        <th>Employee</th>
+        <th>Reason</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>State</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assignment in object_list %}
+      <tr class="border-b">
+        <td class="py-2">
+          <a class="text-cyan-600" href="{% url 'asset_detail' assignment.asset_id %}">
+            {{ assignment.asset.category.name }} / {{ assignment.asset.serial|default:assignment.asset.asset_tag_internal|default:'N/A' }}
+          </a>
+        </td>
+        <td>{{ assignment.employee.names }}</td>
+        <td>{{ assignment.reason.name }}</td>
+        <td>{{ assignment.start_date }}</td>
+        <td>{{ assignment.end_date|default:'-' }}</td>
+        <td>{% if assignment.end_date %}Closed{% else %}Active{% endif %}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="py-3">No assignments found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

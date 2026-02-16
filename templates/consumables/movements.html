@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Stock Movements{% endblock %}
+{% block content %}
+<div class="card mb-4 flex justify-between items-center">
+  <h1 class="font-semibold">Movements (immutable)</h1>
+  <a href="{% url 'stock_movement_create' %}" class="btn-primary">New Movement</a>
+</div>
+<div class="card overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead><tr class="border-b"><th class="py-2">Date</th><th>Type</th><th>Model</th><th>Qty</th><th>From</th><th>To</th><th>Reason</th></tr></thead>
+    <tbody>
+      {% for m in object_list %}
+      <tr class="border-b">
+        <td class="py-2">{{ m.created_at }}</td>
+        <td>{{ m.movement_type }}</td>
+        <td>{{ m.cartridge_model }}</td>
+        <td>{{ m.quantity }}</td>
+        <td>{{ m.from_warehouse|default:'-' }}</td>
+        <td>{{ m.to_warehouse|default:'-' }}</td>
+        <td>{{ m.reason }}</td>
+      </tr>
+      {% empty %}<tr><td colspan="7">No movements.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

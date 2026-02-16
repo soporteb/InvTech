@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}New Stock Movement{% endblock %}
+{% block content %}
+<form method="post" class="card space-y-3">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p class="text-xs text-slate-500">Note: movements are immutable. Use ADJUST for corrections.</p>
+  <button class="btn-primary">Register movement</button>
+</form>
+{% endblock %}

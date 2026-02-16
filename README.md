@@ -98,6 +98,7 @@ This means your local PostgreSQL user/password does not match `.env`.
 - `/assets/` Assets list + HTMX filters
 - `/employees/` Employees CRUD
 - `/locations/` Locations CRUD
+- `/assignments/` Assignment module
 
 ## Django admin credentials
 - This project does **not** ship default admin username/password.

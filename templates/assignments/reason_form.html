@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}New Assignment Reason{% endblock %}
+{% block content %}
+<form method="post" class="card space-y-3">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn-primary">Save reason</button>
+</form>
+{% endblock %}

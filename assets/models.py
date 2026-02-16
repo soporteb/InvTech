@@ -258,3 +258,27 @@ class SoftwareLicenseAssignment(models.Model):
 
     class Meta:
         unique_together = ('license', 'asset')
+
+
+class AssetOperation(models.Model):
+    class OperationType(models.TextChoices):
+        MAINTENANCE = 'MAINTENANCE', 'Maintenance'
+        REPLACEMENT = 'REPLACEMENT', 'Replacement'
+        DECOMMISSION = 'DECOMMISSION', 'Decommission'
+
+    asset = models.ForeignKey(Asset, on_delete=models.CASCADE, related_name='operations')
+    operation_type = models.CharField(max_length=20, choices=OperationType.choices)
+    performed_at = models.DateTimeField(auto_now_add=True)
+    justification = models.TextField(blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-performed_at']
+
+    def clean(self):
+        super().clean()
+        if self.operation_type == self.OperationType.REPLACEMENT and not self.justification:
+            raise ValidationError({'justification': 'Replacement requires justification.'})
+
+    def __str__(self):
+        return f"{self.asset_id} - {self.operation_type}"

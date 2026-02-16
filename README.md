@@ -103,3 +103,7 @@ This means your local PostgreSQL user/password does not match `.env`.
 - This project does **not** ship default admin username/password.
 - Create one with: `python manage.py createsuperuser` (or Docker equivalent).
 
+
+## Phase 4 implemented
+- Asset operations: reassign (atomic close+create), return/unassign, maintenance, replacement (justification required), decommission.
+- Consumables: cartridge catalog, stock view, immutable movements (IN/OUT/TRANSFER/ADJUST/SCRAP), negative stock prevention, and correction policy via ADJUST.

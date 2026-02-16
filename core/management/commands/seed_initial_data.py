@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 
+from assignments.models import AssignmentReason
 from core.models import Category, Location, Status
 from consumables.models import Warehouse
 
@@ -52,6 +53,7 @@ CATEGORIES = [
 
 STATUSES = ['Available', 'Assigned', 'Maintenance', 'Decommissioned']
 WAREHOUSES = ['almacen equipos informaticos', 'almacen general']
+ASSIGNMENT_REASONS = ['Initial assignment', 'Rotation', 'Replacement', 'Return']
 
 
 class Command(BaseCommand):
@@ -66,4 +68,6 @@ class Command(BaseCommand):
             Status.objects.get_or_create(name=name)
         for name in WAREHOUSES:
             Warehouse.objects.get_or_create(name=name)
+        for name in ASSIGNMENT_REASONS:
+            AssignmentReason.objects.get_or_create(name=name)
         self.stdout.write(self.style.SUCCESS('Initial catalog data loaded.'))

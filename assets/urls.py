@@ -1,6 +1,15 @@
 from django.urls import path
 
-from .views import AssetCreateView, AssetDetailView, AssetListView, AssetUpdateView, CategoryAwarePartialView
+from .views import (
+    AssetCreateView,
+    AssetDetailView,
+    AssetListView,
+    AssetOperationCreateView,
+    AssetReassignView,
+    AssetReturnView,
+    AssetUpdateView,
+    CategoryAwarePartialView,
+)
 
 urlpatterns = [
     path('partials/category-fields/', CategoryAwarePartialView.as_view(), name='asset_category_partial'),
@@ -8,4 +17,7 @@ urlpatterns = [
     path('new/', AssetCreateView.as_view(), name='asset_create'),
     path('<int:pk>/', AssetDetailView.as_view(), name='asset_detail'),
     path('<int:pk>/edit/', AssetUpdateView.as_view(), name='asset_edit'),
+    path('<int:pk>/reassign/', AssetReassignView.as_view(), name='asset_reassign'),
+    path('<int:pk>/return/', AssetReturnView.as_view(), name='asset_return'),
+    path('<int:pk>/operation/', AssetOperationCreateView.as_view(), name='asset_operation_create'),
 ]

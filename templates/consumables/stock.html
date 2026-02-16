@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Consumables Stock{% endblock %}
+{% block content %}
+<div class="card mb-4 flex justify-between items-center">
+  <h1 class="font-semibold">Stock</h1>
+  <div class="space-x-2">
+    <a href="{% url 'stock_movement_create' %}" class="btn-primary">New Movement</a>
+    <a href="{% url 'cartridge_list' %}" class="btn-primary">Cartridge Catalog</a>
+  </div>
+</div>
+<div class="card overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead><tr class="border-b"><th class="py-2">Warehouse</th><th>Cartridge</th><th>Qty</th></tr></thead>
+    <tbody>
+      {% for item in object_list %}
+      <tr class="border-b"><td class="py-2">{{ item.warehouse.name }}</td><td>{{ item.cartridge_model }}</td><td>{{ item.quantity }}</td></tr>
+      {% empty %}<tr><td colspan="3">No stock records.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

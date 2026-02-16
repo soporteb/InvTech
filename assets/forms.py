@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Asset, ComputerSpecs
+from .models import Asset, AssetOperation, ComputerSpecs
 
 
 class AssetForm(forms.ModelForm):
@@ -24,3 +24,9 @@ class ComputerSpecsForm(forms.ModelForm):
     class Meta:
         model = ComputerSpecs
         exclude = ['asset']
+
+
+class AssetOperationForm(forms.ModelForm):
+    class Meta:
+        model = AssetOperation
+        fields = ['operation_type', 'justification']

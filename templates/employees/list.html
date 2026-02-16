@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Employees{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="flex justify-between mb-3"><h1 class="font-semibold">Employees</h1><a href="{% url 'employee_create' %}" class="btn-primary">New</a></div>
+  <table class="min-w-full text-sm">
+    {% for e in object_list %}
+    <tr class="border-b"><td class="py-2">{{ e.names }}</td><td>{{ e.dni }}</td><td>{{ e.worker_type }}</td><td><a href="{% url 'employee_edit' e.pk %}">Edit</a></td></tr>
+    {% empty %}<tr><td>No employees.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

@@ -50,14 +50,18 @@ def main() -> int:
                 cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (db_user,))
                 if cur.fetchone():
                     cur.execute(
-                        sql.SQL("ALTER ROLE {} WITH LOGIN PASSWORD %s").format(sql.Identifier(db_user)),
-                        (db_password,),
+                        sql.SQL("ALTER ROLE {} WITH LOGIN PASSWORD {}").format(
+                            sql.Identifier(db_user),
+                            sql.Literal(db_password),
+                        )
                     )
                     print(f"Updated role password: {db_user}")
                 else:
                     cur.execute(
-                        sql.SQL("CREATE ROLE {} LOGIN PASSWORD %s").format(sql.Identifier(db_user)),
-                        (db_password,),
+                        sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(
+                            sql.Identifier(db_user),
+                            sql.Literal(db_password),
+                        )
                     )
                     print(f"Created role: {db_user}")
 

@@ -76,7 +76,7 @@ This means your local PostgreSQL user/password does not match `.env`.
    - `POSTGRES_PASSWORD`
    - `POSTGRES_DB`
    - `POSTGRES_HOST=localhost`
-2. Run bootstrap script to align PostgreSQL user/db/password with `.env` (uses Python + psycopg, not `psql` binary):
+2. Run bootstrap script to align PostgreSQL user/db/password with `.env` (uses Python + psycopg, not `psql` binary). It also grants `CREATEDB` by default so Django tests can create temporary test DBs:
    - Linux/macOS: `./scripts/bootstrap_local_postgres.sh`
    - Windows PowerShell: `./scripts/bootstrap_local_postgres.ps1`
 3. Retry: `python manage.py migrate`
@@ -86,6 +86,7 @@ This means your local PostgreSQL user/password does not match `.env`.
 > - `PGADMIN_PASSWORD`
 > - `PGADMIN_HOST` (default `localhost`)
 > - `PGADMIN_PORT` (default `5432`)
+> - `POSTGRES_ALLOW_CREATEDB` (default `1`; set `0` to disable CREATEDB grant)
 
 ## If `python manage.py migrate` hangs / delays
 - Verify host/port in `.env` (`POSTGRES_HOST`, `POSTGRES_PORT`).
@@ -97,3 +98,8 @@ This means your local PostgreSQL user/password does not match `.env`.
 - `/assets/` Assets list + HTMX filters
 - `/employees/` Employees CRUD
 - `/locations/` Locations CRUD
+
+## Django admin credentials
+- This project does **not** ship default admin username/password.
+- Create one with: `python manage.py createsuperuser` (or Docker equivalent).
+

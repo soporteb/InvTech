@@ -28,6 +28,7 @@ def main() -> int:
     db_name = env("POSTGRES_DB", "invtech")
     db_user = env("POSTGRES_USER", "invtech")
     db_password = env("POSTGRES_PASSWORD", "invtech")
+    allow_createdb = env("POSTGRES_ALLOW_CREATEDB", "1").lower() in {"1", "true", "yes", "on"}
 
     admin_user = env("PGADMIN_USER", "postgres")
     admin_password = env("PGADMIN_PASSWORD", "")
@@ -50,20 +51,22 @@ def main() -> int:
                 cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (db_user,))
                 if cur.fetchone():
                     cur.execute(
-                        sql.SQL("ALTER ROLE {} WITH LOGIN PASSWORD {}").format(
+                        sql.SQL("ALTER ROLE {} WITH LOGIN PASSWORD {} {}").format(
                             sql.Identifier(db_user),
                             sql.Literal(db_password),
+                            sql.SQL("CREATEDB") if allow_createdb else sql.SQL("NOCREATEDB"),
                         )
                     )
-                    print(f"Updated role password: {db_user}")
+                    print(f"Updated role credentials: {db_user} (CREATEDB={allow_createdb})")
                 else:
                     cur.execute(
-                        sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(
+                        sql.SQL("CREATE ROLE {} LOGIN PASSWORD {} {}").format(
                             sql.Identifier(db_user),
                             sql.Literal(db_password),
+                            sql.SQL("CREATEDB") if allow_createdb else sql.SQL("NOCREATEDB"),
                         )
                     )
-                    print(f"Created role: {db_user}")
+                    print(f"Created role: {db_user} (CREATEDB={allow_createdb})")
 
                 cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db_name,))
                 if not cur.fetchone():

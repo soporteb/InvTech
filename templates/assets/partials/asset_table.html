@@ -1,0 +1,29 @@
+<div class="card overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead>
+      <tr class="text-left border-b">
+        <th class="py-2">Category</th><th>Serial</th><th>Location</th><th>Status</th><th>Padlock</th><th>License</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in page_obj %}
+      <tr class="border-b">
+        <td class="py-2">{{ asset.category.name }}</td>
+        <td>{{ asset.serial|default:'-' }}</td>
+        <td>{{ asset.location.exact_name }}</td>
+        <td>{{ asset.status.name }}</td>
+        <td>{{ asset.has_padlock|yesno:'Yes,No' }}</td>
+        <td>{{ asset.has_license|yesno:'Yes,No' }}</td>
+        <td><a class="text-cyan-600" href="{% url 'asset_detail' asset.pk %}">View</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="py-4">No assets found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="mt-3 flex gap-2 text-xs">
+    {% if page_obj.has_previous %}<a hx-get="?page={{ page_obj.previous_page_number }}" hx-target="#asset-table">Prev</a>{% endif %}
+    <span>Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a hx-get="?page={{ page_obj.next_page_number }}" hx-target="#asset-table">Next</a>{% endif %}
+  </div>
+</div>

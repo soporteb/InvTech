@@ -8,7 +8,10 @@
 - Tailwind CSS
 
 ## Run with Docker (first time)
-1. `cp .env.example .env`
+1. Create `.env` file (it is a file, not a folder):
+   - Linux/macOS: `cp .env.example .env`
+   - Windows PowerShell: `Copy-Item .env.example .env`
+   - Cross-platform: `python scripts/init_env.py`
 2. `docker compose up --build -d`
 3. `docker compose exec web python manage.py migrate`
 4. `docker compose exec web python manage.py seed_initial_data`
@@ -17,16 +20,20 @@
 
 ## Run locally (first time)
 1. Create and activate virtualenv.
-2. `pip install -r requirements.txt`
-3. Ensure PostgreSQL is running locally.
-4. Keep `.env` with `POSTGRES_HOST=localhost` (default in `.env.example`).
-5. Create/repair local DB + user credentials from `.env` (**no `psql` CLI required**):
+2. Create `.env` file (not a folder):
+   - Linux/macOS: `cp .env.example .env`
+   - Windows PowerShell: `Copy-Item .env.example .env`
+   - Cross-platform: `python scripts/init_env.py`
+3. `pip install -r requirements.txt`
+4. Ensure PostgreSQL is running locally.
+5. Keep `.env` with `POSTGRES_HOST=localhost` (default in `.env.example`).
+6. Create/repair local DB + user credentials from `.env` (**no `psql` CLI required**):
    - Linux/macOS: `./scripts/bootstrap_local_postgres.sh`
    - Windows PowerShell: `./scripts/bootstrap_local_postgres.ps1`
-6. `python manage.py migrate`
-7. `python manage.py seed_initial_data`
-8. `python manage.py createsuperuser`
-9. `python manage.py runserver`
+7. `python manage.py migrate`
+8. `python manage.py seed_initial_data`
+9. `python manage.py createsuperuser`
+10. `python manage.py runserver`
 
 ---
 

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Assets{% endblock %}
+{% block content %}
+<div class="card mb-4">
+  <div class="flex flex-wrap gap-2 items-end">
+    <input name="q" form="filter-form" placeholder="Search" class="border rounded px-3 py-2" />
+    <input name="status" form="filter-form" placeholder="Status" class="border rounded px-3 py-2" />
+    <input name="category" form="filter-form" placeholder="Category" class="border rounded px-3 py-2" />
+    <form id="filter-form" hx-get="{% url 'asset_list' %}" hx-target="#asset-table" hx-swap="innerHTML"></form>
+    <a href="{% url 'asset_create' %}" class="btn-primary">New Asset</a>
+  </div>
+</div>
+<div id="asset-table">
+  {% include 'assets/partials/asset_table.html' %}
+</div>
+{% endblock %}

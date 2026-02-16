@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-100 flex items-center justify-center">
+  <div class="bg-white border border-slate-200 rounded-lg shadow-sm w-full max-w-md p-6">
+    <h1 class="text-xl font-semibold mb-4">InvTech Login</h1>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="w-full bg-cyan-500 text-white py-2 rounded">Sign in</button>
+    </form>
+  </div>
+</body>
+</html>

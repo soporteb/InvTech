@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Asset Form{% endblock %}
+{% block content %}
+<form method="post" class="card space-y-3">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div id="category-aware-fields" hx-get="{% url 'asset_category_partial' %}" hx-trigger="load, change from:#id_category" hx-target="#category-aware-fields" hx-include="#id_category"></div>
+  <button class="btn-primary">Save</button>
+</form>
+{% endblock %}
